@@ -40,7 +40,7 @@ Resources:
         Type: AWS::Serverless::Function
         Properties:
             Handler: start-save-twitch-presence.default
-            Runtime: nodejs14.x
+            Runtime: nodejs16.x
             Timeout: 3
             MemorySize: 128
             CodeUri: ./dist/start-save-twitch-presence
@@ -49,7 +49,7 @@ Resources:
                 - AmazonSESFullAccess
                 - AmazonSQSFullAccess
                 - SecretsManagerReadWrite
-                # - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
+                - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
             Tags:
                 LambdaName: api-start-save-twitch-presence
             Events:
@@ -60,11 +60,29 @@ Resources:
                         Method: post
                         RestApiId:
                             Ref: ApiGatewayApi
+    StartSaveTwitchPresenceFunction2:
+        Type: AWS::Serverless::Function
+        Properties:
+            Handler: start-save-twitch-presence.default
+            Runtime: nodejs16.x
+            CodeUri: ./dist/start-save-twitch-presence
+            Timeout: 5
+            Policies:
+                - AWSLambdaVPCAccessExecutionRole
+                - AmazonSESFullAccess
+                - AmazonSQSFullAccess
+                - SecretsManagerReadWrite
+                - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
+            Tags:
+                LambdaName: api-start-save-twitch-presence-2
+            AutoPublishAlias: live
+            FunctionUrlConfig:
+                AuthType: NONE
     ProcessSaveTwitchPresenceFunction:
         Type: AWS::Serverless::Function
         Properties:
             Handler: process-save-twitch-presence.default
-            Runtime: nodejs14.x
+            Runtime: nodejs16.x
             CodeUri: ./dist/process-save-twitch-presence
             MemorySize: 128
             ReservedConcurrentExecutions: 5
@@ -73,7 +91,7 @@ Resources:
                 - SecretsManagerReadWrite
                 - AmazonSESFullAccess
                 - AmazonSQSFullAccess
-                # - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
+                - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
             Tags:
                 LambdaName: process-save-twitch-presence
             Timeout: 60
@@ -87,7 +105,7 @@ Resources:
         Type: AWS::Serverless::Function
         Properties:
             Handler: retrieve-twitch-presence.default
-            Runtime: nodejs14.x
+            Runtime: nodejs16.x
             # API Gateway timeout is 30
             Timeout: 29
             MemorySize: 156
@@ -97,7 +115,7 @@ Resources:
                 - AmazonSESFullAccess
                 - AmazonSQSFullAccess
                 - SecretsManagerReadWrite
-                # - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
+                - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
             Tags:
                 LambdaName: api-retrieve-twitch-presence
             Events:
@@ -108,6 +126,24 @@ Resources:
                         Method: get
                         RestApiId:
                             Ref: ApiGatewayApi
+    RetrieveTwitchPresenceFunction2:
+        Type: AWS::Serverless::Function
+        Properties:
+            Handler: retrieve-twitch-presence.default
+            Runtime: nodejs16.x
+            CodeUri: ./dist/retrieve-twitch-presence
+            Timeout: 29
+            Policies:
+                - AWSLambdaVPCAccessExecutionRole
+                - AmazonSESFullAccess
+                - AmazonSQSFullAccess
+                - SecretsManagerReadWrite
+                - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
+            Tags:
+                LambdaName: api-retrieve-twitch-presence-2
+            AutoPublishAlias: live
+            FunctionUrlConfig:
+                AuthType: NONE
 # Outputs:
 #     SaveTwitchPresenceApi:
 #         Description: URL to save twitch presence

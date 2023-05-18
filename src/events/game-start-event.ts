@@ -28,7 +28,7 @@ export const handleGameStartEvent = async (event: GameStartEvent, mysql: Serverl
 };
 
 const buildRankInfo = (event: GameStartEvent): string => {
-	if (!!event.data.playerRank) {
+	if (event.data.playerRank) {
 		return event.data.playerRank;
 	}
 	switch (event.data.metadata.gameType) {
